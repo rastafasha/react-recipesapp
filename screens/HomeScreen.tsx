@@ -1,23 +1,25 @@
 import homeScreenStyles from '@/styles/homeScreenStyles';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import axios from 'axios';
 import { useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { Recipe } from '../models/recipe';
+type RootStackParamList = {
+  Home: undefined;
+  Detail: { recipeId: number; title: string; image: string };
+};
+
+type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+
 
 export const HomeScreen = () => {
-  interface Recipe {
-    id: number;
-    title: string;
-    image: string;
-    readyInMinutes: number;
-    healthScore: number;
-    type?: string;
-  }
-
+  
+  
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProps>();
   useEffect(() => {
     const fetchRecipes = async () => {
 
@@ -51,7 +53,14 @@ export const HomeScreen = () => {
     fetchRecipes();
   }, []);
   const renderRecipeCard = ({ item }: { item: Recipe }) => (
-    <TouchableOpacity style={styles.card} activeOpacity={0.8}>
+    <TouchableOpacity onPress={()=>
+      navigation.navigate('Detail',{
+      recipeId: item?.id,
+      title:item?.title,
+      image:item?.image,
+    })
+    } 
+    style={styles.card} activeOpacity={0.8}>
         <View style={styles.typeBadge}>
           <Text>{item?.type}</Text>
         </View>

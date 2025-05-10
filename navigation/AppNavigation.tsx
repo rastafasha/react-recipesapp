@@ -1,3 +1,4 @@
+import DishDetailsScreen from '@/screens/DishDetailsScreen';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
@@ -24,6 +25,7 @@ const DiscoverStackScreen = () => {
     return (
         <DiscoverStack.Navigator screenOptions={{headerShown:false}}>
             <DiscoverStack.Screen name='Home' component={HomeScreen} />
+            <DiscoverStack.Screen name='Detail' component={DishDetailsScreen} />
         </DiscoverStack.Navigator>
     );
 }
@@ -43,11 +45,6 @@ const MealPlanStackScreen = () => {
         </MealPlanStack.Navigator>
     );
 }
-// const StackScreen = () =>{
-//     <ProfileStack.Navigator>
-//         <ProfileStack.Screen  name='Profile' component={ProfileScreen} />
-//     </ProfileStack.Navigator>
-// }
 const AuthStackScreen = () => {
     return (
         <AuthStack.Navigator screenOptions={{headerShown:false}}>
@@ -80,6 +77,7 @@ const BottomTabNavigator = () => {
                 tabBarActiveTintColor: '#007aff',
                 tabBarInactiveTintColor: '#666',
                 headerShown: false,
+                // tabBarStyle: { display: 'none' },
             };
 
 
