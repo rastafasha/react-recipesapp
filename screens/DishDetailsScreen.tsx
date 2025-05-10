@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Image,
     ScrollView,
-    StyleSheet, Text
+    StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
 
 type DishDetailParam ={
@@ -31,9 +31,7 @@ const DishDetailsScreen = () => {
     const {recipeId, title, image} = route.params;
     const [recipe, setRecipe] = useState<RecipeDetail| null>(null);
     const [loading, setLoading] = useState(false);
-
-    
-  
+    console.log(recipe);
 
     useEffect(()=>{
         const fetchRecipeDetails = async () =>{
@@ -44,9 +42,10 @@ const DishDetailsScreen = () => {
                         includeNutrition: false,
                     }
                 });
+                setRecipe(response.data);
             } catch (error) {
-                console.log("error",error);
-            }finally{
+                console.log("error", error);
+            } finally {
                 setLoading(false);
             }
         };
@@ -56,7 +55,27 @@ const DishDetailsScreen = () => {
     return (
         <ScrollView style={styles.container}>
             <Image source={{uri:image}} style={styles.image}></Image>
-        <Text>DishDetailsScreen</Text>
+            <Text style={styles.title}>{title}</Text>
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Ingredients</Text>
+                {recipe?.extendedIngredients?.map((ingredient: any, index: number) => (
+                    <Text key={index} style={styles.sectionInfo}>{ingredient.original}</Text>
+                ))}
+            </View>
+            <View style={styles.section}> 
+                <Text style={styles.sectionTitle}>Steps</Text>
+                {recipe?.analyzedInstructions[0]?.steps.map((step: any, index: number) => {
+                    return (
+                        <View key={index} style={styles.step}>
+                            <Text style={styles.stepNumber}>Step {step.number}</Text>
+                            <Text style={styles.stepText}>{step.step}</Text>
+                        </View>
+                    );
+                })}
+            </View>
+            <TouchableOpacity style={styles.startbutton}>
+                <Text style={styles.startButtonText}>Start Cooking</Text>
+            </TouchableOpacity>
         </ScrollView>
     )
 }
