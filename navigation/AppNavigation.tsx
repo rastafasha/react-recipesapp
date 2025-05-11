@@ -1,4 +1,5 @@
 import DishDetailsScreen from '@/screens/DishDetailsScreen';
+import MealPlanDetailScreen from '@/screens/MealPlanDetailScreen';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
@@ -42,6 +43,7 @@ const MealPlanStackScreen = () => {
     return (
         <MealPlanStack.Navigator screenOptions={{headerShown:false}}>
             <MealPlanStack.Screen name='Meal' component={MealPlanScreen} />
+            <MealPlanStack.Screen name='MealPlanDetail' component={MealPlanDetailScreen} />
         </MealPlanStack.Navigator>
     );
 }

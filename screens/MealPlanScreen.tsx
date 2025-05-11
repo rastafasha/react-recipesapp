@@ -1,11 +1,20 @@
 import meatPlanScreenStyles from "@/styles/mealPlanScreenStyles";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+type RootStackParamList = {
+  'Meal Plan': undefined;
+  MealPlanDetail: { planName: string; recipes: { id: number; title: string; image: string }[] };
+};
+
+type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'Meal Plan'>;
+
 export const MealPlanScreen = () => {
-  const navigation = useNavigation();
+  
+  const navigation = useNavigation<NavigationProps>();
   const [mealPlan, setMealPlan] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
   console.log(mealPlan);
@@ -65,6 +74,13 @@ export const MealPlanScreen = () => {
     fetchMealPlan();
     
   }, []);
+
+  const handleMealPress = (
+    planName:string,
+    recipes: {id:number; title:string;image:string}[]
+  ) =>{
+    navigation.navigate('MealPlanDetail',{planName, recipes} )
+  }
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -98,7 +114,7 @@ export const MealPlanScreen = () => {
       </View>
       <Text style={styles.mealTitle}>Meal Plans</Text>
       {mealPlan?.map((plan:any, index:number)=>(
-        <TouchableOpacity key={index} style={styles.planCard}>
+        <TouchableOpacity onPress={()=> handleMealPress(plan.name, plan.recipes)} key={index} style={styles.planCard}>
           <Image 
             style={styles.planImage} 
             source={{uri: plan.recipes[0] ? plan.recipes[0].image : 'https://via.placeholder.com/150'}}
